@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerProjectile : ProjectileMove
 {
-    [SerializeField] private float newSpeed = 3.0f;
+    [SerializeField] private float newSpeed = 5.0f;
     // Start is called before the first frame update
     protected override void Move()
     {

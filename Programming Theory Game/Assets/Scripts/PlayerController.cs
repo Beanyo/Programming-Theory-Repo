@@ -23,9 +23,7 @@ public class PlayerController : MonoBehaviour
         CheckBoundary();
         Movement();
         RotateCharacter();
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
             Shoot();
         }
