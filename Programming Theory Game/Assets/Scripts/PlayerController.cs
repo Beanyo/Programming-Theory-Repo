@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject gunLocation;
     private Camera m_mainCamera;
 
+    public int health = 3;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +70,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void UpdateHealth(int damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            Debug.Log("Game Over");
+        }
+    }
     private void Shoot()
     {
         GameObject pooledProjectile = ObjectPooler.SharedInstance.GetPooledObject();
