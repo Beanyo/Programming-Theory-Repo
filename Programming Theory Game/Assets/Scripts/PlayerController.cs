@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject gunLocation;
     private Camera m_mainCamera;
 
-    public int health = 3;
+    public int health = 10;
 
     // Start is called before the first frame update
     void Start()
