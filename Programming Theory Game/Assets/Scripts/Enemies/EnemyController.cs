@@ -39,6 +39,7 @@ public abstract class EnemyController : MonoBehaviour
             playerController = other.GetComponent<PlayerController>(); 
             // call UpdateHealth method of player to inflict damage
             playerController.UpdateHealth(damage);
+            Destroy(gameObject);
             // Debug.Log(playerController.health);
         }
         if (other.gameObject.CompareTag("Bullet"))
