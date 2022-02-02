@@ -6,14 +6,15 @@ public class PlayerController : MonoBehaviour
 {
     private float horizontalInput;
     private float verticalInput;
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float speed = 3.0f;
     private float xRange = 20;
     [SerializeField] private GameObject gunLocation;
+    private Camera m_mainCamera;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -21,20 +22,14 @@ public class PlayerController : MonoBehaviour
     {
         CheckBoundary();
         Movement();
+        RotateCharacter();
+
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Shoot();
         }
     }
-
-    private void Movement()
-    {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);
-    }
-
     private void CheckBoundary()
     {
         if (transform.position.x < -xRange)
@@ -46,6 +41,34 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
         }
     }
+    private void Movement()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+
+        // relative to world
+        transform.position += Vector3.right * Time.deltaTime * speed * horizontalInput;
+        transform.position += Vector3.forward * Time.deltaTime * speed * verticalInput;
+
+        //relative to object
+        /*        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput); 
+                transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);*/
+    }
+
+    private void RotateCharacter()
+    {
+        //begin testing turning player to face mouse position
+        Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        float distance;
+        if (plane.Raycast(ray, out distance))
+        {
+            Vector3 target = ray.GetPoint(distance);
+            Vector3 direction = target - transform.position;
+            float rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, rotation, 0);
+        }
+    }
 
     private void Shoot()
     {
@@ -53,6 +76,7 @@ public class PlayerController : MonoBehaviour
         if (pooledProjectile != null)
         {
             pooledProjectile.SetActive(true); // activate it
+            pooledProjectile.transform.rotation = transform.rotation; // rotation same as player's
             pooledProjectile.transform.position = gunLocation.transform.position; // position it at player's gun
         }
     }
