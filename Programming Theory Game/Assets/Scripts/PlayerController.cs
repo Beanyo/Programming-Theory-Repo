@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     [SerializeField] private float speed = 3.0f;
-    private float xRange = 20;
+    private float fieldRange = 10f;
     [SerializeField] private GameObject gunLocation;
     private Camera m_mainCamera;
 
@@ -22,8 +22,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckBoundary();
+
         Movement();
+        CheckBoundary();
         RotateCharacter();
         if (Input.GetMouseButtonDown(0))
         {
@@ -32,14 +33,24 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckBoundary()
     {
-        if (transform.position.x < -xRange)
+        Vector3 limitStop = transform.position;
+        if (limitStop.x < -fieldRange)
         {
-            transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
+            limitStop.x = -fieldRange;
         }
-        if (transform.position.x > xRange)
+        if (limitStop.x > fieldRange)
         {
-            transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
+            limitStop.x = fieldRange;
         }
+        if (limitStop.z > fieldRange)
+        {
+            limitStop.z = fieldRange;
+        }
+        if (limitStop.z < -fieldRange)
+        {
+            limitStop.z = -fieldRange;
+        }
+        transform.position = limitStop;
     }
     private void Movement()
     {
