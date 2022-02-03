@@ -6,8 +6,8 @@ using System;
 public class ProjectileMove : MonoBehaviour
 {
     protected float bulletSpeed = 1.0f; // default bullet speed
-    private float topBound = 10.0f; // extent to let bullets fly on z axis
-    private float sideBound = 10.0f; // extent to let bullets fly on z axis
+    private float topBound = 25.0f; // extent to let bullets fly on z axis
+    private float sideBound = 25.0f; // extent to let bullets fly on z axis
 
     // Start is called before the first frame update
     void Start()

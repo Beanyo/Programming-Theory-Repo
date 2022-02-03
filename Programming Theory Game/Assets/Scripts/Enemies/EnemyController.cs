@@ -8,13 +8,18 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] protected float moveSpeed = 1.0f;
     public int health { get; protected set; }
     public int damage { get; protected set; }
+    public int targetValue { get; protected set; }
     private GameObject player;
     private PlayerController playerController;
+    private GameObject mainUI;
+    private MainUIHandler scoreUpdate;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
+        mainUI = GameObject.Find("Canvas");
         AssignValues();
+        scoreUpdate = mainUI.GetComponent<MainUIHandler>();
     }
 
     // Update is called once per frame
@@ -56,8 +61,10 @@ public abstract class EnemyController : MonoBehaviour
     protected void Damaged(int hurt)
     {
         health -= hurt;
+        //Debug.Log("enemy hit" + health);
         if(health <= 0)
         {
+            scoreUpdate.currentScore += targetValue;
             Destroy(gameObject);
         }
     }
