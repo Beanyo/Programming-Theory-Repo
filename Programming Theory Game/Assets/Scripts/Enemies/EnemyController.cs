@@ -13,7 +13,7 @@ public abstract class EnemyController : MonoBehaviour
     private PlayerController playerController;
     private GameObject mainUI;
     private MainUIHandler scoreUpdate;
-    // Start is called before the first frame update
+
     void Start()
     {
         player = GameObject.Find("Player");
@@ -22,7 +22,7 @@ public abstract class EnemyController : MonoBehaviour
         scoreUpdate = mainUI.GetComponent<MainUIHandler>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         MoveToPlayer();
@@ -45,11 +45,11 @@ public abstract class EnemyController : MonoBehaviour
             // call UpdateHealth method of player to inflict damage
             playerController.UpdateHealth(damage);
             Destroy(gameObject);
-            // Debug.Log(playerController.health);
+
         }
         if (other.gameObject.CompareTag("Bullet"))
         {
-            // Debug.Log("HIT");
+
             // assign object hit to local projectile variable
             PlayerProjectile bullet = other.GetComponent<PlayerProjectile>();
             // remove bullet from scene
@@ -61,7 +61,6 @@ public abstract class EnemyController : MonoBehaviour
     protected void Damaged(int hurt)
     {
         health -= hurt;
-        //Debug.Log("enemy hit" + health);
         if(health <= 0)
         {
             scoreUpdate.currentScore += targetValue;

@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private GameObject mainUI;
+    [SerializeField] private GameObject gunLocation;
+    [SerializeField] private float speed = 3.0f;
     private float horizontalInput;
     private float verticalInput;
-    [SerializeField] private float speed = 3.0f;
     private float fieldRangeX = 19f;
     private float fieldRangeZ = 15f;
-    [SerializeField] private GameObject gunLocation;
-    private Camera m_mainCamera;
-    [SerializeField] private GameObject mainUI;
-    private MainUIHandler scoreUpdate;
     private bool gameOver = false;
-
+    private Camera m_mainCamera;
+    private MainUIHandler scoreUpdate;
     public int health = 10;
 
-    // Start is called before the first frame update
     void Start()
     {
         m_mainCamera = Camera.main;
@@ -25,7 +23,6 @@ public class PlayerController : MonoBehaviour
         scoreUpdate.playerHealth = health;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!gameOver)
@@ -74,21 +71,21 @@ public class PlayerController : MonoBehaviour
         transform.position += Vector3.right * Time.deltaTime * speed * horizontalInput;
         transform.position += Vector3.forward * Time.deltaTime * speed * verticalInput;
 
-        //relative to object
-        /*        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput); 
-                transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);*/
     }
 
     private void RotateCharacter()
     {
-        //begin testing turning player to face mouse position
+        // generate ray from camera to mouse position
         Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
+        // create new instance of plane y 1 for ray to hit
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         float distance;
         if (plane.Raycast(ray, out distance))
         {
+            // position loaded from distance ray travelled to hit plane
             Vector3 target = ray.GetPoint(distance);
             Vector3 direction = target - transform.position;
+            //rotate player to direction from target
             float rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, rotation, 0);
         }
@@ -109,7 +106,6 @@ public class PlayerController : MonoBehaviour
     private void GameOver()
     {
         gameOver = true;
-        Debug.Log("Game Over");
     }
 
     private void Shoot()

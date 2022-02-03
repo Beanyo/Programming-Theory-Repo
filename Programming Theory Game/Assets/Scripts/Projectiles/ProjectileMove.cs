@@ -25,7 +25,6 @@ public class ProjectileMove : MonoBehaviour
     protected virtual void Move()
     {
         transform.Translate(Vector3.forward * Time.deltaTime * bulletSpeed);
-        //Debug.Log(bulletSpeed);
     }
 
     protected void DestroyOutOfBounds()
@@ -33,12 +32,12 @@ public class ProjectileMove : MonoBehaviour
         if(Math.Abs(transform.position.z) > topBound)
         {
             gameObject.SetActive(false);
-           // Debug.Log("Destroyed TopBound");
+
         }
         if (Math.Abs(transform.position.x) > sideBound)
         {
             gameObject.SetActive(false);
-           // Debug.Log("Destroyed SideBound");
+
         }
     }
 }
