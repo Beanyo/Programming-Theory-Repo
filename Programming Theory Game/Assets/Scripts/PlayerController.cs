@@ -7,9 +7,13 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     [SerializeField] private float speed = 3.0f;
-    private float fieldRange = 10f;
+    private float fieldRangeX = 19f;
+    private float fieldRangeZ = 15f;
     [SerializeField] private GameObject gunLocation;
     private Camera m_mainCamera;
+    [SerializeField] private GameObject mainUI;
+    private MainUIHandler scoreUpdate;
+    private bool gameOver = false;
 
     public int health = 10;
 
@@ -17,38 +21,47 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         m_mainCamera = Camera.main;
+        scoreUpdate = mainUI.GetComponent<MainUIHandler>();
+        scoreUpdate.playerHealth = health;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        Movement();
-        CheckBoundary();
-        RotateCharacter();
-        if (Input.GetMouseButtonDown(0))
+        if (!gameOver)
         {
-            Shoot();
+            Movement();
+            CheckBoundary();
+            RotateCharacter();
+            if (Input.GetMouseButtonDown(0))
+            {
+                Shoot();
+            }
+        }
+        else
+        {
+            scoreUpdate.GameOverGenerate();
+
         }
     }
     private void CheckBoundary()
     {
         Vector3 limitStop = transform.position;
-        if (limitStop.x < -fieldRange)
+        if (limitStop.x < -fieldRangeX)
         {
-            limitStop.x = -fieldRange;
+            limitStop.x = -fieldRangeX;
         }
-        if (limitStop.x > fieldRange)
+        if (limitStop.x > fieldRangeX)
         {
-            limitStop.x = fieldRange;
+            limitStop.x = fieldRangeX;
         }
-        if (limitStop.z > fieldRange)
+        if (limitStop.z > fieldRangeZ)
         {
-            limitStop.z = fieldRange;
+            limitStop.z = fieldRangeZ;
         }
-        if (limitStop.z < -fieldRange)
+        if (limitStop.z < -fieldRangeZ)
         {
-            limitStop.z = -fieldRange;
+            limitStop.z = -fieldRangeZ;
         }
         transform.position = limitStop;
     }
@@ -83,12 +96,22 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHealth(int damage)
     {
-        health -= damage;
+        if (!gameOver)
+        {
+            health -= damage;
+            scoreUpdate.playerHealth = health;
+        }
         if(health <= 0)
         {
-            Debug.Log("Game Over");
+            GameOver();
         }
     }
+    private void GameOver()
+    {
+        gameOver = true;
+        Debug.Log("Game Over");
+    }
+
     private void Shoot()
     {
         GameObject pooledProjectile = ObjectPooler.SharedInstance.GetPooledObject();
