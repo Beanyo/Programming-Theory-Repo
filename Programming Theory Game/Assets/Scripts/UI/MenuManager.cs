@@ -38,7 +38,6 @@ public class MenuManager : MonoBehaviour
         data.highPlayerName = currentPlayerName;
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-        Debug.Log(json);
     }
     public void LoadScore()
     {
@@ -49,7 +48,6 @@ public class MenuManager : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(json);
             highScore = data.highScore;
             highPlayerName = data.highPlayerName;
-            Debug.Log(json);
         }
         else
         {

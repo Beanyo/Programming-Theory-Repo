@@ -30,7 +30,6 @@ public class MenuUIHandler : MonoBehaviour
     public void UpdateBestScore()
     {
         ScoreText.text = "Best Score: " + highPlayerName + " : " + highScore;
-        Debug.Log(highPlayerName + highScore);
     }
     public void StartGame()
     {
@@ -43,10 +42,9 @@ public class MenuUIHandler : MonoBehaviour
         currentPlayerName = inputField.text;
         if (string.IsNullOrEmpty(currentPlayerName))
         {
-            return;
+            currentPlayerName = "Anon";
         }
         MenuManager.Instance.currentPlayerName = currentPlayerName;
-        Debug.Log(currentPlayerName);
     }
     public void ResetBest()
     {
