@@ -6,6 +6,7 @@ public abstract class EnemyController : MonoBehaviour
 {
 
     [SerializeField] protected float moveSpeed = 1.0f;
+    // ENCAPSULATION
     public int health { get; protected set; }
     public int damage { get; protected set; }
     public int targetValue { get; protected set; }
@@ -27,6 +28,7 @@ public abstract class EnemyController : MonoBehaviour
     {
         MoveToPlayer();
     }
+    // ABSTRACTION
     protected abstract void AssignValues();
 
     protected virtual void MoveToPlayer()
